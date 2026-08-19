@@ -1,0 +1,46 @@
+
+import frappe
+from frappe import _
+
+def create_internal_purchase_invoice(doc, method=None):
+    if not doc.custom_is_internal_company:
+        return
+
+    if not doc.custom_represent_company:
+        frappe.throw(_("Please select Represent Company (Supplier)."))
+
+    existing = frappe.db.exists(
+        "Purchase Invoice",
+        {"custom_sales_invoice": doc.name}
+    )
+
+    if existing:
+        return
+
+    pi = frappe.new_doc("Purchase Invoice")
+    pi.supplier = doc.custom_represent_company
+    pi.company = doc.company
+    pi.posting_date = doc.posting_date
+    pi.due_date = doc.due_date
+    pi.bill_date = doc.posting_date
+
+    pi.custom_invoice_no = doc.name
+
+    for d in doc.items:
+        pi.append("items", {
+            "item_code": d.item_code,
+            "item_name": d.item_name,
+            "description": d.description,
+            "qty": d.qty,
+            "uom": d.uom,
+            "stock_uom": d.stock_uom,
+            "conversion_factor": d.conversion_factor,
+            "rate": d.rate,
+            #"warehouse": d.warehouse,
+            "expense_account": d.expense_account
+            #"cost_center": d.cost_center
+        })
+
+    pi.flags.ignore_permissions = True
+    pi.insert()
+    #pi.submit()

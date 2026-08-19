@@ -10,6 +10,38 @@ app_license = "mit"
 
 # required_apps = []
 
+doc_events = {
+	"Sales Invoice": {
+		"on_submit": "spokes_unitec_app.script.create_internal_purchase_invoice"
+	},
+	"Delivery Note":{
+		"on_submit": "spokes_unitec_app.script.create_internal_purchase_receipt"
+	},
+	"Transfer Out":{
+		"on_submit": "spokes_unitec_app.script.transs_out_submit"
+	},
+	"Transfer In":{
+		"on_submit": "spokes_unitec_app.script.trans_in_submit"
+	},
+	"Initial Inspection":{
+		"on_submit": "spokes_unitec_app.script.create_repack_stock_entry"
+	}
+}
+fixtures = [
+	"Custom Field", "Client Script", "Property Setter", "Print Format"]
+
+doctype_js = {
+	"Sales Order": "public/js/Fetch_NamingSeries_Onload.js",
+	"Purchase Invoice": "public/js/Fetch_NamingSeries_Onload.js",
+        "Sales Invoice": "public/js/Fetch_NamingSeries_Onload.js",
+	"Purchase Receipt":"public/js/Fetch_NamingSeries_Onload.js",
+	"Purchase Order": "public/js/Fetch_NamingSeries_Onload.js",
+	"Transfer Out": "public/js/Fetch_NamingSeries_Onload.js",
+	"Transfer IN" : "public/js/Fetch_NamingSeries_Onload.js",
+        "Delivery Note": "public/js/Fetch_NamingSeries_Onload.js",
+	"Work Order": "public/js/Fetch_NamingSeries_Onload.js",
+	"Material Request": "public/js/Fetch_NamingSeries_Onload.js"
+}
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
 # 	{

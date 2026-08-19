@@ -1,0 +1,52 @@
+{
+ "add_total_row": 0,
+ "add_translate_data": 0,
+ "columns": [],
+ "creation": "2026-08-03 22:56:02.525062",
+ "disable_prepared_report_automation": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "doctype_to_sync": [],
+ "filters": [
+  {
+   "default": "Today",
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "mandatory": 0,
+   "wildcard_filter": 0
+  },
+  {
+   "default": "Today",
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "mandatory": 0,
+   "wildcard_filter": 0
+  }
+ ],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": null,
+ "modified": "2026-08-04 22:36:33.171844",
+ "modified_by": "Administrator",
+ "module": "spokes_unitec_app",
+ "name": "Transfer In Report",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "SELECT\r\n    ti.name AS \"Transfer In:Link/Transfer In:150\",\r\n    ti.transaction_date AS \"Date:Date:100\",\r\n    ti.company AS \"Company:Link/Company:180\",\r\n    ti.from_branch AS \"From Branch:Link/Branch:140\",\r\n    ti.out_reference_no AS \"Transfer Out Ref:Link/Transfer Out:150\",\r\n\r\n    tii.item_code AS \"Item:Link/Item:150\",\r\n    tii.item_name AS \"Item Name:Data:220\",\r\n    tii.qty AS \"Qty:Float:100\",\r\n    tii.uom AS \"UOM:Link/UOM:80\",\r\n    tii.sales_price AS \"Sales Price:Currency:120\",\r\n    (tii.qty * tii.sales_price) AS \"Amount:Currency:120\",\r\nti.transfer_out_location AS \"Location:Link/Transfer Out Location:140\"\r\nFROM `tabTransfer In` ti\r\nLEFT JOIN `tabTransfer Out Item` tii\r\nON ti.name=tii.parent\r\n\r\nWHERE ti.docstatus<2 and ti.transaction_date between %(from_date)s and %(to_date)s\r\n\r\nORDER BY ti.date DESC,ti.name DESC;",
+ "ref_doctype": "Transfer In",
+ "report_name": "Transfer In Report",
+ "report_type": "Query Report",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "All"
+  }
+ ],
+ "snapshot_report": 0,
+ "timeout": 0
+}

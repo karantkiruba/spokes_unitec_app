@@ -1,0 +1,113 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-08-04 18:59:22.860573",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_fcuk",
+  "naming_series",
+  "transfer_in_doc_no",
+  "column_break_khin",
+  "date",
+  "section_break_pyxw",
+  "initial_inspection_list",
+  "amended_from",
+  "transfer_out_location",
+  "stock_entry"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_fcuk",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "transfer_in_doc_no",
+   "fieldtype": "Link",
+   "label": "Transfer In Doc No",
+   "options": "Transfer In"
+  },
+  {
+   "fieldname": "column_break_khin",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_standard_filter": 1,
+   "label": "Date"
+  },
+  {
+   "fieldname": "section_break_pyxw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "initial_inspection_list",
+   "fieldtype": "Table",
+   "label": "Initial Inspection List",
+   "options": "Initial Inspection List"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "search_index": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Initial Inspection",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "transfer_out_location",
+   "fieldtype": "Link",
+   "label": "Transfer Out Location",
+   "options": "Transfer Out Location",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "stock_entry",
+   "fieldtype": "Link",
+   "label": "Stock Entry",
+   "options": "Stock Entry",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-08-04 23:19:24.347955",
+ "modified_by": "Administrator",
+ "module": "spokes_unitec_app",
+ "name": "Initial Inspection",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

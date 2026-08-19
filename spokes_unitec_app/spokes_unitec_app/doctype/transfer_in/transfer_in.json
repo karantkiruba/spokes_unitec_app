@@ -1,0 +1,566 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-07-27 17:25:15.078531",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series_definition",
+  "naming_series",
+  "get_from_material_request",
+  "customer",
+  "customer_name",
+  "column_break_ouyj",
+  "date",
+  "from_branch",
+  "column_break_touu",
+  "compnay",
+  "to_branch",
+  "accounting_dimensions_section",
+  "cost_center",
+  "section_break_gfnx",
+  "currency",
+  "transfer_out_location",
+  "column_break_rzax",
+  "price_list",
+  "ignore_pricing_rule",
+  "items_section",
+  "set_warehouse",
+  "column_break_qmsk",
+  "to_warehouse",
+  "section_break_qeia",
+  "items",
+  "section_break_nepb",
+  "total_quantity",
+  "out_reference_no",
+  "total_net_weight",
+  "column_break_orjz",
+  "total_company_currency",
+  "net_total_company_currency",
+  "column_break_dynv",
+  "total",
+  "net_total",
+  "section_break_ivfj",
+  "tax_category",
+  "sales_taxes_and_charges_template",
+  "column_break_hmkv",
+  "shipping_rule",
+  "column_break_glxd",
+  "incoterm",
+  "section_break_yzzi",
+  "sales_taxes_and_charges",
+  "section_break_qczb",
+  "column_break_yzwr",
+  "column_break_qzkg",
+  "total_taxes_and_charges",
+  "section_break_fmbq",
+  "column_break_cxcj",
+  "column_break_fqlg",
+  "grand_total",
+  "rounding_adjustment",
+  "rounded_total",
+  "in_words",
+  "advance_paid",
+  "disable_rounded_total",
+  "section_break_btnx",
+  "apply_additional_discount_on",
+  "column_break_yowp",
+  "additional_discount_percentage",
+  "additional_discount_amount",
+  "section_break_cvtp",
+  "taxes_and_charges_calculation",
+  "contact_info",
+  "billing_address_section",
+  "customer_address",
+  "address",
+  "section_break_asuy",
+  "shipping_address_name",
+  "shipping_address",
+  "section_break_tqwo",
+  "company_address_name",
+  "column_break_djnp",
+  "company_address",
+  "vehicle_details_tab",
+  "vehicle_detail",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "get_from_material_request",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Get from Material Request",
+   "options": "Material Request"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fetch_from": "customer.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Customer Name"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "accounting_dimensions_section",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "Accounting Dimensions"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency",
+   "print_hide": 1,
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "ignore_pricing_rule",
+   "fieldtype": "Check",
+   "label": "Ignore Pricing Rule"
+  },
+  {
+   "fieldname": "items_section",
+   "fieldtype": "Section Break",
+   "label": "Items"
+  },
+  {
+   "fieldname": "to_warehouse",
+   "fieldtype": "Link",
+   "label": "To Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Transfer In Item"
+  },
+  {
+   "depends_on": "total_net_weight",
+   "fieldname": "total_net_weight",
+   "fieldtype": "Float",
+   "label": "Total Net Weight",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Total",
+   "options": "currency"
+  },
+  {
+   "fieldname": "net_total",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Net Total",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tax_category",
+   "fieldtype": "Link",
+   "label": "Tax Category",
+   "options": "Tax Category"
+  },
+  {
+   "fieldname": "sales_taxes_and_charges_template",
+   "fieldtype": "Link",
+   "label": "Sales Taxes and Charges Template",
+   "options": "Sales Taxes and Charges Template"
+  },
+  {
+   "fieldname": "shipping_rule",
+   "fieldtype": "Link",
+   "label": "Shipping Rule",
+   "options": "Shipping Rule"
+  },
+  {
+   "fieldname": "incoterm",
+   "fieldtype": "Data",
+   "label": "Incoterm"
+  },
+  {
+   "fieldname": "total_taxes_and_charges",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Total Taxes and Charges",
+   "options": "currency"
+  },
+  {
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "label": "Grand Total",
+   "options": "currency"
+  },
+  {
+   "fieldname": "rounding_adjustment",
+   "fieldtype": "Currency",
+   "label": "Rounding Adjustment"
+  },
+  {
+   "fieldname": "rounded_total",
+   "fieldtype": "Currency",
+   "label": "Rounded Total",
+   "options": "currency"
+  },
+  {
+   "fieldname": "in_words",
+   "fieldtype": "Data",
+   "label": "In Words"
+  },
+  {
+   "fieldname": "advance_paid",
+   "fieldtype": "Currency",
+   "label": "Advance Paid",
+   "options": "party_account_currency"
+  },
+  {
+   "default": "0",
+   "fieldname": "disable_rounded_total",
+   "fieldtype": "Check",
+   "label": "Disable Rounded Total"
+  },
+  {
+   "default": "Grand Total",
+   "fieldname": "apply_additional_discount_on",
+   "fieldtype": "Select",
+   "label": "Apply Additional Discount On",
+   "options": "\nGrand Total\nNet Total"
+  },
+  {
+   "fieldname": "additional_discount_percentage",
+   "fieldtype": "Float",
+   "label": "Additional Discount Percentage"
+  },
+  {
+   "fieldname": "additional_discount_amount",
+   "fieldtype": "Currency",
+   "label": "Additional Discount Amount",
+   "options": "currency"
+  },
+  {
+   "fieldname": "contact_info",
+   "fieldtype": "Tab Break",
+   "hidden": 1,
+   "label": "Address & Contact"
+  },
+  {
+   "fieldname": "billing_address_section",
+   "fieldtype": "Section Break",
+   "label": "Billing Address"
+  },
+  {
+   "fieldname": "customer_address",
+   "fieldtype": "Link",
+   "label": "Customer Address",
+   "options": "Address"
+  },
+  {
+   "fieldname": "shipping_address_name",
+   "fieldtype": "Link",
+   "label": "Shipping Address Name",
+   "options": "Address"
+  },
+  {
+   "fieldname": "shipping_address",
+   "fieldtype": "Small Text",
+   "label": "Shipping Address",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "company_address",
+   "fieldtype": "Small Text",
+   "label": "Company Address",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Transfer In",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "naming_series_definition",
+   "fieldtype": "Select",
+   "label": "Naming Series Definition"
+  },
+  {
+   "fieldname": "out_reference_no",
+   "fieldtype": "Link",
+   "label": "Out Reference No",
+   "options": "Transfer Out"
+  },
+  {
+   "fieldname": "transfer_out_location",
+   "fieldtype": "Link",
+   "label": "Transfer Out Location",
+   "options": "Transfer Out Location"
+  },
+  {
+   "fieldname": "vehicle_details_tab",
+   "fieldtype": "Tab Break",
+   "hidden": 1,
+   "label": "Vehicle Details"
+  },
+  {
+   "fieldname": "vehicle_detail",
+   "fieldtype": "Table",
+   "label": "Vehicle Detail",
+   "options": "Transfer Vehicle Details"
+  },
+  {
+   "fieldname": "from_branch",
+   "fieldtype": "Link",
+   "label": "From Branch",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "column_break_ouyj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "column_break_touu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "compnay",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "to_branch",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "To Branch",
+   "options": "Branch"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_gfnx",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "Currency and Price List"
+  },
+  {
+   "fieldname": "column_break_rzax",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "price_list",
+   "fieldtype": "Link",
+   "label": "Price List",
+   "options": "Price List"
+  },
+  {
+   "fieldname": "column_break_qmsk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_qeia",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_nepb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_quantity",
+   "fieldtype": "Float",
+   "label": "Total Quantity"
+  },
+  {
+   "fieldname": "column_break_orjz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_company_currency",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Total (Company Currency)",
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "net_total_company_currency",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Net Total (Company Currency)",
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_dynv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_ivfj",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "Taxes"
+  },
+  {
+   "fieldname": "column_break_hmkv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_glxd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_yzzi",
+   "fieldtype": "Section Break",
+   "hidden": 1
+  },
+  {
+   "fieldname": "sales_taxes_and_charges",
+   "fieldtype": "Table",
+   "label": "Sales Taxes and Charges",
+   "options": "Sales Taxes and Charges"
+  },
+  {
+   "fieldname": "section_break_qczb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_yzwr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_qzkg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_fmbq",
+   "fieldtype": "Section Break",
+   "label": "Totals"
+  },
+  {
+   "fieldname": "column_break_cxcj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_fqlg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_btnx",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "Additional Discount"
+  },
+  {
+   "fieldname": "column_break_yowp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_cvtp",
+   "fieldtype": "Section Break",
+   "label": "Tax Breakup"
+  },
+  {
+   "fieldname": "taxes_and_charges_calculation",
+   "fieldtype": "Long Text",
+   "label": "Taxes and Charges Calculation",
+   "no_copy": 1,
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Small Text",
+   "label": "Address",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_asuy",
+   "fieldtype": "Section Break",
+   "label": "Shipping Address"
+  },
+  {
+   "fieldname": "section_break_tqwo",
+   "fieldtype": "Section Break",
+   "label": "Company Address"
+  },
+  {
+   "fieldname": "company_address_name",
+   "fieldtype": "Link",
+   "label": "Company Address Name",
+   "options": "Address"
+  },
+  {
+   "fieldname": "column_break_djnp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "set_warehouse",
+   "fieldtype": "Link",
+   "label": "From Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-08-19 17:27:53.567255",
+ "modified_by": "Administrator",
+ "module": "spokes_unitec_app",
+ "name": "Transfer In",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

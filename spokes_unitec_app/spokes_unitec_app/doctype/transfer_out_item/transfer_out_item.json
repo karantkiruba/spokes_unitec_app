@@ -1,0 +1,320 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-07-27 18:57:33.288166",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "barcode",
+  "has_item_scanned",
+  "item_code",
+  "column_break_mjai",
+  "item_name",
+  "available_qty",
+  "customers_item_code",
+  "description_section",
+  "description",
+  "item_group",
+  "brand",
+  "image_section",
+  "image",
+  "image_view",
+  "section_break_frps",
+  "quantity",
+  "stock_uom",
+  "column_break_tlyg",
+  "uom",
+  "sales_price",
+  "uom_conversion_factor",
+  "qty_as_per_stock_uom",
+  "section_break_snkw",
+  "price_list_rate",
+  "price_list_rate_company_currency",
+  "section_break_hbhf",
+  "margin_type",
+  "margin_rate_or_amount",
+  "rate_with_margin",
+  "column_break_xjhd",
+  "rate_company_currency",
+  "amount_company_currency",
+  "pricing_rules",
+  "rate_of_stock_uom",
+  "is_free_item",
+  "grant_commission",
+  "section_break_xktc",
+  "net_rate"
+ ],
+ "fields": [
+  {
+   "fieldname": "barcode",
+   "fieldtype": "Data",
+   "label": "Barcode"
+  },
+  {
+   "default": "0",
+   "fieldname": "has_item_scanned",
+   "fieldtype": "Check",
+   "label": "Has Item Scanned"
+  },
+  {
+   "bold": 1,
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item",
+   "options": "Item"
+  },
+  {
+   "fetch_from": "item_code.item_name",
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "in_global_search": 1,
+   "in_list_view": 1,
+   "label": "Item Name"
+  },
+  {
+   "fieldname": "description_section",
+   "fieldtype": "Section Break",
+   "label": "Description"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description"
+  },
+  {
+   "fieldname": "item_group",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Item Group",
+   "options": "Item Group",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Brand Name",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "image_section",
+   "fieldtype": "Section Break",
+   "label": "Image"
+  },
+  {
+   "fieldname": "image",
+   "fieldtype": "Attach",
+   "hidden": 1,
+   "label": "Image"
+  },
+  {
+   "fieldname": "image_view",
+   "fieldtype": "Image",
+   "label": "Image View",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.uom != doc.stock_uom",
+   "fieldname": "stock_uom",
+   "fieldtype": "Link",
+   "label": "Stock UOM",
+   "options": "UOM",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.uom != doc.stock_uom",
+   "fetch_from": "item_code.stock_uom",
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "UOM",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "price_list_rate",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Price List Rate",
+   "options": "currency",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "price_list_rate",
+   "fieldname": "margin_type",
+   "fieldtype": "Select",
+   "label": "Margin Type",
+   "options": "\nPercentage\nAmount",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.margin_type && doc.price_list_rate",
+   "fieldname": "margin_rate_or_amount",
+   "fieldtype": "Float",
+   "label": "Margin Rate or Amount",
+   "non_negative": 1,
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.margin_type && doc.price_list_rate && doc.margin_rate_or_amount",
+   "fieldname": "rate_with_margin",
+   "fieldtype": "Currency",
+   "label": "Rate With Margin",
+   "options": "currency",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "pricing_rules",
+   "fieldtype": "Small Text",
+   "hidden": 1,
+   "label": "Pricing Rules",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_free_item",
+   "fieldtype": "Check",
+   "label": "Is Free Item",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fetch_from": "item_code.grant_commission",
+   "fieldname": "grant_commission",
+   "fieldtype": "Check",
+   "label": "Grant Commission",
+   "read_only": 1
+  },
+  {
+   "fieldname": "net_rate",
+   "fieldtype": "Currency",
+   "label": "Net Rate",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "sales_price",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Sales Price",
+   "read_only": 1
+  },
+  {
+   "fieldname": "available_qty",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Available Qty",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_mjai",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "customers_item_code",
+   "fieldtype": "Data",
+   "label": "Customer's Item Code"
+  },
+  {
+   "fieldname": "section_break_frps",
+   "fieldtype": "Section Break"
+  },
+  {
+   "bold": 1,
+   "fieldname": "quantity",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Quantity",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_tlyg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.uom != doc.stock_uom",
+   "fieldname": "uom_conversion_factor",
+   "fieldtype": "Float",
+   "label": "UOM Conversion Factor",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.uom != doc.stock_uom",
+   "fieldname": "qty_as_per_stock_uom",
+   "fieldtype": "Float",
+   "label": "Qty as per Stock UOM",
+   "no_copy": 1,
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_snkw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "price_list_rate_company_currency",
+   "fieldtype": "Currency",
+   "label": "Price List Rate (Company Currency)",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "section_break_hbhf",
+   "fieldtype": "Section Break",
+   "label": "Discount and Margin"
+  },
+  {
+   "fieldname": "column_break_xjhd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.margin_type && doc.price_list_rate && doc.margin_rate_or_amount",
+   "fieldname": "rate_company_currency",
+   "fieldtype": "Currency",
+   "label": "Rate (Company Currency)",
+   "options": "Company:company:default_currency",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.margin_type && doc.price_list_rate && doc.margin_rate_or_amount",
+   "fieldname": "amount_company_currency",
+   "fieldtype": "Currency",
+   "label": "Amount (Company Currency)",
+   "options": "Company:company:default_currency",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval: doc.uom != doc.stock_uom",
+   "fieldname": "rate_of_stock_uom",
+   "fieldtype": "Currency",
+   "label": "Rate of Stock UOM",
+   "no_copy": 1,
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_xktc",
+   "fieldtype": "Section Break"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-08-19 16:47:36.532483",
+ "modified_by": "Administrator",
+ "module": "spokes_unitec_app",
+ "name": "Transfer Out Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
