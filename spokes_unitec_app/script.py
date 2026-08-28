@@ -1,5 +1,6 @@
 import frappe
 from frappe import _
+from tms.utils import validation as tms_validate
 
 def create_internal_purchase_invoice(doc, method=None):
     if not doc.custom_is_internal_company:
@@ -188,7 +189,7 @@ def stock_details_pos(product_code, warehouse):
 
 
 @frappe.whitelist()
-def transs_out_submit(self, method):
+def transss_out_submit(self, method):
 	stock_entry = frappe.new_doc("Stock Entry")
 	transfer_in = frappe.new_doc("Transfer In")
 	stock_entry.company = self.company
@@ -248,6 +249,194 @@ def transs_out_submit(self, method):
 				new_qty = existing_qty + (material_item.qty or 0)
 				frappe.db.set_value("Material Request Item",material_item.material_request_item,"transfered_qty",new_qty)
 
+
+@frappe.whitelist()
+def transs_out_submit(self, method):
+
+        stock_entry = frappe.new_doc("Stock Entry")
+
+        stock_entry.company = self.company
+        stock_entry.stock_entry_type = "Material Transfer"
+        stock_entry.add_to_transit = 1
+        stock_entry.out_reference_no = self.name
+
+        for dtl in self.items:
+                stock_entry.append("items", {
+                        "s_warehouse": self.set_warehouse,
+                        "t_warehouse": self.to_warehouse,
+                        "item_code": dtl.item_code,
+                        "qty": dtl.qty,
+                        "uom": dtl.uom,
+                        "cost_center": dtl.cost_center,
+                        "allow_zero_valuation_rate": 0,
+                        "use_serial_batch_fields":1,
+                        "serial_no":dtl.serial_no
+                })
+
+        stock_entry.flags.ignore_permissions = 1
+        stock_entry.save()
+        stock_entry.submit()
+        if self.is_tms_regrind == 1:
+            create_regrinding_return_from_transfer_out(self)
+
+        if self.is_tms == 1:
+
+                tms_receipt = frappe.new_doc("TMS Tool Receipt")
+
+                tms_receipt.company = self.company
+                #tms_receipt.source_warehouse = self.set_warehouse
+                tms_receipt.source_warehouse = self.to_warehouse
+                tms_receipt.target_warehouse = self.target_warehouse
+                tms_receipt.receipt_type = "Head Office Transfer"
+                tms_receipt.transfer_reference = self.name
+                tms_receipt.receipt_date = self.posting_date
+                tms_receipt.posting_date = self.posting_date
+                tms_receipt.transfer_out_location = self.to_branch
+                for dtl in self.items:
+
+                        tms_receipt.append("items", {
+                                "item_code": dtl.item_code,
+                                "item_name": dtl.item_name,
+                                "condition": "New",
+                                "qty": dtl.qty,
+                                "rate": dtl.rate,
+                                "amount": (dtl.qty or 0) * (dtl.rate or 0),
+                                "uom": dtl.uom,
+                                "serial_no":dtl.serial_no,
+                        })
+
+                tms_receipt.flags.ignore_permissions = 1
+                tms_receipt.insert()
+
+        else:
+
+
+                transfer_in = frappe.new_doc("Transfer In")
+
+                for dtl in self.items:
+                        transfer_in.append("items", {
+                                "warehouse": self.to_warehouse,
+                                "item_code": dtl.item_code,
+                                "quantity": dtl.qty,
+                                "rate": dtl.rate,
+                                "item_name": dtl.item_name,
+                                "uom": dtl.uom
+                        })
+
+                naming_series = get_namingseriesdetail(
+                        "Transfer In",
+                        self.target_warehouse
+                )
+
+                if not naming_series:
+                        frappe.throw(
+                                f"No Naming Series found for Transfer In and Warehouse {self.to_warehouse}"
+                        )
+
+                transfer_in.naming_series = naming_series[0].series_name
+                transfer_in.naming_series_definition = naming_series[0].definition
+
+                transfer_in.company = self.company
+                transfer_in.get_from_material_request = self.get_from_material_request
+                transfer_in.source_warehouse = self.set_warehouse
+                transfer_in.from_branch = self.from_branch
+                transfer_in.out_reference_no = self.name
+                transfer_in.transfer_out_location = naming_series[0].transfer_out_location
+                transfer_in.set_warehouse = self.to_warehouse
+                transfer_in.date = self.posting_date
+                transfer_in.cost_center = naming_series[0].cost_center
+                transfer_in.to_warehouse = naming_series[0].target_warehouse
+
+                transfer_in.flags.ignore_permissions = 1
+
+                transfer_in.total = self.total
+                transfer_in.total_qty = self.total_qty
+
+                transfer_in.save()
+
+        if self.get_from_material_request:
+
+                material_request = frappe.get_doc(
+                        "Material Request",
+                        self.get_from_material_request
+                )
+
+                for material_item in self.items:
+
+                        if material_item.material_request_item:
+
+                                existing_qty = frappe.db.get_value(
+                                        "Material Request Item",
+                                        material_item.material_request_item,
+                                        "transfered_qty"
+                                ) or 0
+
+                                new_qty = existing_qty + (material_item.qty or 0)
+
+                                frappe.db.set_value(
+                                        "Material Request Item",
+                                        material_item.material_request_item,
+                                        "transfered_qty",
+                                        new_qty
+                                )
+
+def create_regrinding_return_from_transfer_out(self):
+
+    if frappe.db.exists(
+        "TMS Regrinding Return",
+        {"transfer_reference": self.name}
+    ):
+        return
+
+    regrind_return = frappe.new_doc("TMS Regrinding Return")
+
+    regrind_return.company = self.company
+    #regrind_return.tms_location = self.tms_location
+    #regrind_return.customer = self.customer
+
+    regrind_return.posting_date = self.posting_date
+    regrind_return.dispatch_date = self.posting_date
+
+    regrind_return.skip_stock_entry = 1
+
+    regrind_return.transfer_out = self.name
+
+    # Target warehouse for Head Office
+    regrind_return.target_warehouse = self.target_warehouse
+    regrind_return.source_warehouse = self.set_warehouse
+
+    for dtl in self.items:
+
+        info = tms_validate.get_item_tool_info(dtl.item_code)
+
+        regrind_return.append("items", {
+            "item_code": dtl.item_code,
+            "qty": dtl.qty,
+            "uom": dtl.uom,
+
+            "serial_no": dtl.serial_no,
+
+            "physical_tool_code": info.get("tms_physical_tool_code"),
+
+            "tms_tool_registration": info.get(
+                "custom_tms_tool_registration"
+            ),
+
+            "tool_type": info.get("tms_tool_type"),
+
+            "cpc_component_last_used": getattr(
+                dtl,
+                "cpc_component_last_used",
+                None
+            ),
+        })
+
+    regrind_return.flags.ignore_permissions = True
+    regrind_return.insert(ignore_permissions=True)
+    regrind_return.submit()
+
+    return regrind_return.name
+
 @frappe.whitelist()
 def get_namingseriesdetail(doctype, target_warehouse=None):
     return frappe.db.sql("""
@@ -269,7 +458,7 @@ def get_namingseriesdetail(doctype, target_warehouse=None):
 @frappe.whitelist()
 def trans_in_submit(self, method):
 	stock_entry = frappe.new_doc("Stock Entry")
-	stock_entry.company = self.company
+	#stock_entry.company = self.company
 	stock_entry.stock_entry_type = 'Material Transfer'
 	stock_entry.add_to_transit=1
 	stock_entry.in_reference_no = self.name
@@ -293,9 +482,9 @@ def trans_in_submit(self, method):
 			"s_warehouse": self.set_warehouse,
 			"t_warehouse": self.to_warehouse,
 			"item_code": dtl.item_code,
-			"qty": dtl.qty,
+			"qty": dtl.quantity,
 			"uom": dtl.uom,
-			"cost_center":dtl.cost_center,
+			#"cost_center":dtl.cost_center,
 			"allow_zero_valuation_rate": 0
 		})
 	stock_entry.save()

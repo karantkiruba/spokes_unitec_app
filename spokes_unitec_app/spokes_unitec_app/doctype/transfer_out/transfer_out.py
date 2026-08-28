@@ -283,7 +283,7 @@ class TransferOut(SellingController):
 		self.check_nextdoc_docstatus()
 		self.update_reserved_qty()
 		self.update_project()
-		self.update_stock_ledger()
+		#self.update_stock_ledger()
 		self.update_prevdoc_status("cancel")
 
 		self.db_set("status", "Cancelled")

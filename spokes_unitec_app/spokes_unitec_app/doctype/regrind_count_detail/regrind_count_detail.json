@@ -1,0 +1,79 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-08-28 18:42:00.209673",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "cycle_number",
+  "completed_regrind_count",
+  "max_regrind_count",
+  "remaining_regrinds",
+  "source_serial_no",
+  "output_serial_no"
+ ],
+ "fields": [
+  {
+   "bold": 1,
+   "fieldname": "cycle_number",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "This Cycle Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "completed_regrind_count",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Completed Regrind Count",
+   "read_only": 1
+  },
+  {
+   "fieldname": "max_regrind_count",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Maximum Regrind Count",
+   "read_only": 1
+  },
+  {
+   "fieldname": "remaining_regrinds",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Remaining Regrinds",
+   "read_only": 1
+  },
+  {
+   "bold": 1,
+   "description": "Carries this cycle's regrind count.",
+   "fieldname": "output_serial_no",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Reground Serial No",
+   "options": "Serial No",
+   "reqd": 1
+  },
+  {
+   "description": "Blank on the first cycle, when the tool is still a new item.",
+   "fieldname": "source_serial_no",
+   "fieldtype": "Link",
+   "label": "Incoming Serial No",
+   "options": "Serial No"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-08-28 18:51:20.785714",
+ "modified_by": "Administrator",
+ "module": "spokes_unitec_app",
+ "name": "Regrind Count Detail",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

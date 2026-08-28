@@ -16,6 +16,8 @@
   "company",
   "company_tax_id",
   "get_from_material_request",
+  "is_tms",
+  "is_tms_regrind",
   "column_break1",
   "posting_date",
   "posting_time",
@@ -2236,9 +2238,9 @@
    "label": "Naming Series Definition"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "target_warehouse",
    "fieldtype": "Data",
-   "hidden": 1,
    "label": "Target Warehouse"
   },
   {
@@ -2282,6 +2284,18 @@
    "fieldname": "company_gstin",
    "fieldtype": "Data",
    "label": "Company Gstin"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_tms",
+   "fieldtype": "Check",
+   "label": "Is TMS"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_tms_regrind",
+   "fieldtype": "Check",
+   "label": "Is TMS Regrind"
   }
  ],
  "grid_page_length": 50,
@@ -2295,7 +2309,7 @@
    "link_fieldname": "consolidated_invoice"
   }
  ],
- "modified": "2026-08-19 17:18:58.179168",
+ "modified": "2026-08-24 12:53:01.036530",
  "modified_by": "Administrator",
  "module": "spokes_unitec_app",
  "name": "Transfer Out",
