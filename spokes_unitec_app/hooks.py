@@ -25,7 +25,11 @@ doc_events = {
 	},
 	"Initial Inspection":{
 		"on_submit": "spokes_unitec_app.script.create_repack_stock_entry"
+	},
+	"Tool Stock Write Off": {
+		"on_submit": "spokes_unitec_app.script.create_stock_entry"
 	}
+
 }
 fixtures = [
 	"Custom Field", "Client Script", "Property Setter", "Print Format"]
@@ -40,6 +44,10 @@ doctype_js = {
 	"Transfer IN" : "public/js/Fetch_NamingSeries_Onload.js",
         "Delivery Note": "public/js/Fetch_NamingSeries_Onload.js",
 	"Work Order": "public/js/Fetch_NamingSeries_Onload.js",
+	"Subcontracting Order": "public/js/Fetch_NamingSeries_Onload.js",
+	"Subcontracting Receipt": "public/js/Fetch_NamingSeries_Onload.js",
+	"Payment Entry": "public/js/Fetch_NamingSeries_Onload.js",
+	"Journal Entry": "public/js/Fetch_NamingSeries_Onload.js",
 	"Material Request": "public/js/Fetch_NamingSeries_Onload.js"
 }
 # Each item in the list will be shown as an app in the apps page

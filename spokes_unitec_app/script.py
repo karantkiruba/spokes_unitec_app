@@ -686,3 +686,205 @@ def get_warehouse_address(branch_name):
 						inner join `tabAddress` ad on  ad.name=CM.parent
                                                 WHERE CM.link_name='{warehouse}' and CM.link_doctype='Warehouse' limit 1""".format(warehouse=warehouse),as_dict=1)
 		return warehouse_address
+
+import frappe
+from frappe import _
+
+
+def create_stock_entry(doc, method=None):
+
+    # =========================================================
+    # SOURCE WAREHOUSE
+    # =========================================================
+
+    source_warehouse = doc.get("source_warehouse")
+
+    if not source_warehouse:
+        source_warehouse = doc.get("set_warehouse")
+
+    if not source_warehouse:
+        frappe.throw(
+            _("Source Warehouse is required.")
+        )
+
+
+    # =========================================================
+    # TARGET WAREHOUSE
+    # =========================================================
+
+    target_warehouse = "Scrap HO- UTM"
+
+
+    # =========================================================
+    # FIND TOOL STOCK WRITE OFF ITEM CHILD TABLE
+    # =========================================================
+
+    child_table_fieldname = None
+
+    for df in frappe.get_meta("Tool Stock Write Off").fields:
+
+        if (
+            df.fieldtype == "Table"
+            and df.options == "Tool Stock Write Off Item"
+        ):
+            child_table_fieldname = df.fieldname
+            break
+
+
+    if not child_table_fieldname:
+        frappe.throw(
+            _(
+                "Child table <b>Tool Stock Write Off Item</b> "
+                "is not found in Tool Stock Write Off."
+            )
+        )
+
+
+    # =========================================================
+    # GET CHILD TABLE ROWS
+    # =========================================================
+
+    items = doc.get(child_table_fieldname) or []
+
+
+    if not items:
+        frappe.throw(
+            _(
+                "No items found in Tool Stock Write Off Item table."
+            )
+        )
+
+
+    # =========================================================
+    # CREATE STOCK ENTRY
+    # =========================================================
+
+    stock_entry = frappe.new_doc("Stock Entry")
+
+    stock_entry.stock_entry_type = "Material Issue"
+
+    stock_entry.posting_date = (
+        doc.posting_date
+        if doc.get("posting_date")
+        else frappe.utils.today()
+    )
+
+    if doc.get("posting_time"):
+        stock_entry.posting_time = doc.posting_time
+
+    stock_entry.set_posting_time = 1
+
+
+    # =========================================================
+    # ADD ITEMS
+    # =========================================================
+
+    for row in items:
+
+        if not row.item_code:
+            continue
+
+        if not row.qty or row.qty <= 0:
+            continue
+
+
+        stock_item = stock_entry.append("items", {})
+
+
+        # -----------------------------------------------------
+        # ITEM CODE
+        # -----------------------------------------------------
+
+        stock_item.item_code = row.item_code
+
+
+        # -----------------------------------------------------
+        # QUANTITY
+        # -----------------------------------------------------
+
+        stock_item.qty = row.qty
+
+
+        # -----------------------------------------------------
+        # SOURCE WAREHOUSE
+        # -----------------------------------------------------
+
+        stock_item.s_warehouse = source_warehouse
+
+
+        # -----------------------------------------------------
+        # TARGET / SCRAP WAREHOUSE
+        # -----------------------------------------------------
+
+        stock_item.t_warehouse = target_warehouse
+
+
+        # -----------------------------------------------------
+        # VALUATION RATE
+        # -----------------------------------------------------
+
+        if row.valuation_rate:
+
+            stock_item.basic_rate = row.valuation_rate
+
+
+        # -----------------------------------------------------
+        # STOCK VALUE / AMOUNT
+        # -----------------------------------------------------
+
+        if row.stock_value is not None:
+
+            stock_item.amount = row.stock_value
+
+
+        # -----------------------------------------------------
+        # SERIAL NUMBERS
+        # -----------------------------------------------------
+
+        if row.serial_no:
+
+            stock_item.serial_no = row.serial_no.strip()
+
+
+    # =========================================================
+    # CHECK STOCK ENTRY ITEMS
+    # =========================================================
+
+    if not stock_entry.items:
+
+        frappe.throw(
+            _(
+                "No valid items found in "
+                "<b>Tool Stock Write Off Item</b>."
+            )
+        )
+
+
+    # =========================================================
+    # INSERT STOCK ENTRY
+    # =========================================================
+
+    stock_entry.insert(
+        ignore_permissions=True
+    )
+
+
+    # =========================================================
+    # SUBMIT STOCK ENTRY
+    # =========================================================
+
+    stock_entry.submit()
+
+
+    # =========================================================
+    # MESSAGE
+    # =========================================================
+
+    frappe.msgprint(
+        _(
+            "Stock Entry <b>{0}</b> "
+            "created and submitted successfully."
+        ).format(stock_entry.name),
+        title=_("Stock Entry Created"),
+        indicator="green"
+    )
