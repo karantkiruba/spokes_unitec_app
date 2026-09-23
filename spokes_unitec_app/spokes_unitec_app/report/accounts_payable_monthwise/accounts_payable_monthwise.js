@@ -1,7 +1,7 @@
 // Copyright (c) 2026, SGT and contributors
 // For license information, please see license.txt
 
-frappe.query_reports["Accounts Receivable Monthwise"] = {
+frappe.query_reports["Accounts Payable Monthwise"] = {
 	"filters": [
 		{
 			fieldname: "company",
@@ -71,15 +71,18 @@ frappe.query_reports["Accounts Receivable Monthwise"] = {
 			fieldname: "account_type",
 			label: __("Account Type"),
 			fieldtype: "Select",
-			options: "Receivable",
-			default: "Receivable"
+			options: "Payable",
+			default: "Payable",
+			read_only: 1
 		},
 
 		{
 			fieldname: "party_type",
 			label: __("Party Type"),
 			fieldtype: "Select",
-			options: "Customer"
+			options: "Supplier",
+			default: "Supplier",
+			read_only: 1
 		},
 
 		{
